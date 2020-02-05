@@ -2,7 +2,9 @@ from PyQt5.QtWidgets import *
 
 app = QApplication([])
 window = QWidget()
-layout = QVBoxLayout()
+main_hbox = QHBoxLayout()
+timer_vbox = QVBoxLayout()
+
 layout.addWidget(QPushButton('Top'))
 layout.addWidget(QPushButton('Bottom'))
 window.setLayout(layout)
