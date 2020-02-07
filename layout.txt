@@ -9,3 +9,14 @@ Layout plan:
 	  - vbox to contain:
 	    ~ ??? for matplotlib
 	    ~ Label for stats
+
+= main
+	-stretch
+	* timer
+	-small stretch
+	* timer buttons
+	-stretch
+	* stats
+		* lap list
+		* lap graph
+	-stretch
