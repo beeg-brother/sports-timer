@@ -60,8 +60,12 @@ main_vbox.addLayout(laps_hbox)
 
 #add the table to the vbox
 laptime_table = QTableWidget()
+
+current_lap_num = 1
+laptime_table.setEditTriggers(QTableWidget.NoEditTriggers)
 laptime_table.setRowCount(0)
 laptime_table.setColumnCount(1)
+laptime_table.setHorizontalHeaderLabels(["Lap time"])
 
 laps_hbox.addWidget(laptime_table)
 
@@ -214,6 +218,7 @@ def lap_helper():
 		# add lap time to lap time table
 		laptime_table.insertRow(0)
 		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
+		laptime_table.setVerticalHeaderItem(0, )
 
 
 lap_button.clicked.connect(lap_helper)
