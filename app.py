@@ -27,17 +27,19 @@ main_vbox.addStretch(1)
 timer_label = QLabel(str(time_format(milliseconds = 0)))
 # Center the timer
 timer_label.setAlignment(QtCore.Qt.AlignCenter)
-# set the font to be large and bold
-font = QtGui.QFont("Times",30,QtGui.QFont.Bold)
-timer_label.setFont(font)
+# set the font to be large and bold for the real timer
+big_font = QtGui.QFont("Times",30,QtGui.QFont.Bold)
+timer_label.setFont(big_font)
 
-currLap_label = QLabel(str(time_format(milliseconds = 0)))
-lastLap_label = QLabel(str(time_format(milliseconds = 0)))
+# make the current lap label have a smaller font
+currLap_label = QLabel("Current Lap Time: " + str(time_format(milliseconds = 0)))
+small_font = QtGui.QFont("Times",15,QtGui.QFont.Bold)
+currLap_label.setFont(small_font)
+
+# add the timers to the gui
 main_vbox.addWidget(timer_label)
 main_vbox.addWidget(currLap_label)
 
-
-main_vbox.addWidget(timer_label)
 main_vbox.addStretch(.25)
 
 # define the area where the buttons are
@@ -131,7 +133,8 @@ def counter():
 		current_lap_time = current_time - last_lap
 		# modify the label of the timer
 		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)))[:-4])
-		currLap_label.setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4])
+		# modify the current lap timer
+		currLap_label.setText("Current Lap Time: " + str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4])
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
@@ -218,7 +221,7 @@ def lap_helper():
 		# add lap time to lap time table
 		laptime_table.insertRow(0)
 		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
-		laptime_table.setVerticalHeaderItem(0, )
+		#laptime_table.setVerticalHeaderItem(0, )
 
 
 lap_button.clicked.connect(lap_helper)
