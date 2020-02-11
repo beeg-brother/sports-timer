@@ -8,6 +8,8 @@ from matplotlib.figure import Figure
 from threading import Lock, Thread
 from time import time_ns, sleep
 from datetime import timedelta as time_format
+from statistics import mean
+
 
 plt.ion()
 app = QApplication([])
@@ -52,9 +54,18 @@ timer_button_hbox.addWidget(start_button)
 
 main_vbox.addLayout(timer_button_hbox)
 
+# create the lower area for stats
+laps_hbox = QHBoxLayout()
+main_vbox.addLayout(laps_hbox)
 
-stats_hbox = QHBoxLayout()
-main_vbox.addLayout(stats_hbox)
+# area for the list of laps
+laps_list_vbox = QVBoxLayout()
+laps_hbox.addLayout(laps_list_vbox)
+
+# area for the stats graph and below it, lap times
+laps_graph_vbox = QVBoxLayout()
+laps_hbox.addLayout(laps_graph_vbox)
+
 
 # create a new figure and canvas and add it to the main hbox
 fig = Figure(figsize=(5,5))
@@ -65,7 +76,21 @@ axes = dynamic_canvas.figure.add_subplot(111)
 axes.plot(laps, 'r')
 axes.set_title("Lap Statistics")
 # add the canvas to the gui
-stats_hbox.addWidget(dynamic_canvas)
+laps_graph_vbox.addWidget(dynamic_canvas)
+
+# area for the actual stats to go
+laps_stats_vbox = QVBoxLayout()
+laps_graph_vbox.addLayout(laps_stats_vbox)
+
+# labels for the stats
+avg_lap_label = QLabel("Average lap: 0:00:00.00")
+fastest_lap_label = QLabel("Fastest lap: 0:00:00.00")
+slowest_lap_label = QLabel("Slowest lap: 0:00:00.00")
+
+laps_stats_vbox.addWidget(avg_lap_label)
+laps_stats_vbox.addWidget(fastest_lap_label)
+laps_stats_vbox.addWidget(slowest_lap_label)
+
 
 window.setLayout(main_vbox)
 
@@ -84,7 +109,7 @@ def updatePlot(axes,data):
 
 def truncate(num, decs):
 	div = 10 ** decs
-	return int(num*div) / div
+	return int(num*div) / div + .0001
 
 timer_lock = Lock()
 # defines the loop that increments the time
@@ -98,8 +123,8 @@ def counter():
 		current_time += time_ns() - start_time
 		current_lap_time = current_time - last_lap
 		# modify the label of the timer
-		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)+ .0001))[:-4])
-		currLap_label.setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)+ .0001))[:-4])
+		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)))[:-4])
+		currLap_label.setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4])
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
@@ -153,6 +178,10 @@ def reset_helper():
 	laps = []
 	# update the chart
 	updatePlot(axes, laps)
+	avg_lap_label.setText("Average lap: 0:00:00.00")
+	slowest_lap_label.setText("Slowest lap: 0:00:00.00")
+	fastest_lap_label.setText("Fastest lap: 0:00:00.00")
+
 
 reset_button.clicked.connect(reset_helper)
 # what to do when someone hits the lap button
@@ -171,6 +200,9 @@ def lap_helper():
 		last_lap = current_time
 		# plot the new  stats
 		updatePlot(axes, laps)
+		avg_lap_label.setText("Average lap: " + str(time_format(seconds = truncate(mean(laps)/1000000000, 2)))[:-4])
+		slowest_lap_label.setText("Slowest lap: " + str(time_format(seconds = truncate(max(laps)/1000000000, 2)))[:-4])
+		fastest_lap_label.setText("Fastest lap: " + str(time_format(seconds = truncate(min(laps)/1000000000, 2)))[:-4])
 
 lap_button.clicked.connect(lap_helper)
 

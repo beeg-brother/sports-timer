@@ -19,4 +19,5 @@ Layout plan:
 	* stats
 		* lap list
 		* lap graph
+		* lap stats
 	-stretch
