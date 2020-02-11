@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5 import QtCore,QtGui
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -22,6 +23,12 @@ main_vbox = QVBoxLayout()
 main_vbox.addStretch(1)
 
 timer_label = QLabel(str(time_format(milliseconds = 0)))
+# Center the timer
+timer_label.setAlignment(QtCore.Qt.AlignCenter)
+# set the font to be large and bold
+font = QtGui.QFont("Times",30,QtGui.QFont.Bold)
+timer_label.setFont(font)
+
 main_vbox.addWidget(timer_label)
 
 main_vbox.addStretch(.25)
@@ -85,7 +92,7 @@ def counter():
 		sleep(.05)
 		current_time += time_ns() - start_time
 		# modify the label of the timer
-		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)))[:-4])
+		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2) + .0001))[:-4])
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
