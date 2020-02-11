@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5 import QtCore,QtGui
 import matplotlib.pyplot as plt
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -15,20 +16,26 @@ window = QWidget()
 
 current_time = 0
 last_lap = 0
-
+lapTime = 0
 
 main_vbox = QVBoxLayout()
 
 main_vbox.addStretch(1)
 
 timer_label = QLabel(str(time_format(milliseconds = 0)))
+# Center the timer
+timer_label.setAlignment(QtCore.Qt.AlignCenter)
+# set the font to be large and bold
+font = QtGui.QFont("Times",30,QtGui.QFont.Bold)
+timer_label.setFont(font)
 
-lapTime = 0
 currLap_label = QLabel(str(time_format(milliseconds = 0)))
 lastLap_label = QLabel(str(time_format(milliseconds = 0)))
 main_vbox.addWidget(timer_label)
 main_vbox.addWidget(currLap_label)
 
+
+main_vbox.addWidget(timer_label)
 main_vbox.addStretch(.25)
 
 # define the area where the buttons are
@@ -91,9 +98,8 @@ def counter():
 		current_time += time_ns() - start_time
 		current_lap_time = current_time - last_lap
 		# modify the label of the timer
-		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)))[:-4])
-		currLap_label.setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4])
-
+		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)+ .0001))[:-4])
+		currLap_label.setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)+ .0001))[:-4])
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
@@ -140,7 +146,9 @@ def reset_helper():
 	timer_button_hbox.addWidget(resume_button)
 	# update the timer count
 	timer_label.setText(str(time_format(milliseconds = 0)))
+
 	currLap_label.setText(str(time_format(milliseconds = 0)))
+
 	# reset the lap data
 	laps = []
 	# update the chart
@@ -159,6 +167,8 @@ def lap_helper():
 		lapTime = current_time - last_lap
 		laps.append((lapTime)/1000000000)
 		#add spot to show the last lapTime
+		laps.append((current_time - last_lap)/1000000000)
+
 		last_lap = current_time
 		# plot the new  stats
 		updatePlot(axes, laps)

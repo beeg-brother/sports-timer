@@ -1,11 +1,22 @@
 Layout plan:
 
-one main vbox to contain:
-* one vbox to contain:
-  - timer with stretches
-  - hbox with start/stop
-* one hbox containing:
-  - Label/List for laps
-  - vbox to contain:
-    ~ ??? for matplotlib
-    ~ Label for stats
+= one main vbox to contain:
+	* one vbox to contain:
+	  - timer with stretches
+	  - hbox with start/stop
+	* one hbox containing:
+	  - Label/List for laps
+	  - vbox to contain:
+	    ~ ??? for matplotlib
+	    ~ Label for stats
+
+= main
+	-stretch
+	* timer
+	-small stretch
+	* timer buttons
+	-stretch
+	* stats
+		* lap list
+		* lap graph
+	-stretch
