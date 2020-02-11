@@ -131,6 +131,7 @@ def counter():
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
+timer.daemon = True
 
 # what to do when someone hits the start button
 def start_helper():
@@ -192,6 +193,7 @@ def lap_helper():
 	global current_time
 	global last_lap
 	global lapTime
+	global laps
 	time_lap_button_clicked = current_time
 	delta_time = time_lap_button_clicked - last_lap
 	# check to make sure that the timer is actually running
@@ -209,6 +211,7 @@ def lap_helper():
 		# add lap time to lap time table
 		laptime_table.insertRow(0)
 		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
+
 
 lap_button.clicked.connect(lap_helper)
 
