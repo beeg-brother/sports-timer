@@ -159,6 +159,7 @@ reset_button.clicked.connect(reset_helper)
 def lap_helper():
 	global current_time
 	global last_lap
+	global lapTime
 	time_lap_button_clicked = current_time
 	delta_time = time_lap_button_clicked - last_lap
 	# check to make sure that the timer is actually running
@@ -166,8 +167,6 @@ def lap_helper():
 		# add to the lap data
 		lapTime = current_time - last_lap
 		laps.append((lapTime)/1000000000)
-		#add spot to show the last lapTime
-		laps.append((current_time - last_lap)/1000000000)
 
 		last_lap = current_time
 		# plot the new  stats
