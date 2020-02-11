@@ -185,6 +185,9 @@ def reset_helper():
 	slowest_lap_label.setText("Slowest lap: 0:00:00.00")
 	fastest_lap_label.setText("Fastest lap: 0:00:00.00")
 
+	#reset table
+	laptime_table.setRowCount(0)
+
 
 reset_button.clicked.connect(reset_helper)
 # what to do when someone hits the lap button
