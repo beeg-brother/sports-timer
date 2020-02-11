@@ -58,9 +58,12 @@ main_vbox.addLayout(timer_button_hbox)
 laps_hbox = QHBoxLayout()
 main_vbox.addLayout(laps_hbox)
 
-# area for the list of laps
-laps_list_vbox = QVBoxLayout()
-laps_hbox.addLayout(laps_list_vbox)
+#add the table to the vbox
+laptime_table = QTableWidget()
+laptime_table.setRowCount(0)
+laptime_table.setColumnCount(1)
+
+laps_hbox.addWidget(laptime_table)
 
 # area for the stats graph and below it, lap times
 laps_graph_vbox = QVBoxLayout()
@@ -194,15 +197,18 @@ def lap_helper():
 	# check to make sure that the timer is actually running
 	if delta_time > 0:
 		# add to the lap data
-		lapTime = current_time - last_lap
-		laps.append((lapTime)/1000000000)
+		lapTime = (current_time - last_lap)/1000000000
+		laps.append(lapTime)
 
 		last_lap = current_time
 		# plot the new  stats
 		updatePlot(axes, laps)
-		avg_lap_label.setText("Average lap: " + str(time_format(seconds = truncate(mean(laps)/1000000000, 2)))[:-4])
-		slowest_lap_label.setText("Slowest lap: " + str(time_format(seconds = truncate(max(laps)/1000000000, 2)))[:-4])
-		fastest_lap_label.setText("Fastest lap: " + str(time_format(seconds = truncate(min(laps)/1000000000, 2)))[:-4])
+		avg_lap_label.setText("Average lap: " + str(time_format(seconds = truncate(mean(laps), 2)))[:-4])
+		slowest_lap_label.setText("Slowest lap: " + str(time_format(seconds = truncate(max(laps), 2)))[:-4])
+		fastest_lap_label.setText("Fastest lap: " + str(time_format(seconds = truncate(min(laps), 2)))[:-4])
+		# add lap time to lap time table
+		laptime_table.insertRow(0)
+		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
 
 lap_button.clicked.connect(lap_helper)
 
