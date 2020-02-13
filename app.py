@@ -172,8 +172,10 @@ def reset_helper():
 	global current_time
 	global laps
 	global last_lap
+	global current_lap_num
 	current_time = 0
 	last_lap = 0
+	current_lap_num = 1
 	# get rid of the reset and resume buttons
 	reset_button.setParent(None)
 	resume_button.setParent(None)
@@ -204,6 +206,7 @@ def lap_helper():
 	global last_lap
 	global lapTime
 	global laps
+	global current_lap_num
 	time_lap_button_clicked = current_time
 	delta_time = time_lap_button_clicked - last_lap
 	# check to make sure that the timer is actually running
@@ -221,7 +224,10 @@ def lap_helper():
 		# add lap time to lap time table
 		laptime_table.insertRow(0)
 		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
-		#laptime_table.setVerticalHeaderItem(0, )
+		#label the row properly
+		lap_num_label = str("Lap " + str(current_lap_num))
+		current_lap_num += 1
+		laptime_table.setVerticalHeaderItem(0, QTableWidgetItem(lap_num_label))
 
 
 lap_button.clicked.connect(lap_helper)
