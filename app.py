@@ -82,13 +82,16 @@ laps_hbox.addLayout(laps_graph_vbox)
 
 
 # create a new figure and canvas and add it to the main hbox
-fig = Figure(figsize=(5,5))
+fig = Figure(figsize=(1.5,1.5), tight_layout=True, frameon=False)
 dynamic_canvas = FigureCanvas(fig)
 # plot nothing to start off
 laps = []
 axes = dynamic_canvas.figure.add_subplot(111)
-axes.plot(laps, 'r')
-axes.set_title("Lap Statistics")
+axes.plot(laps, ' ')
+axes.axis('off')
+#axes.get_xaxis().set_visible(False)
+#axes.get_yaxis().set_visible(False)
+#axes.set_title("Lap Statistics")
 # add the canvas to the gui
 laps_graph_vbox.addWidget(dynamic_canvas)
 
@@ -113,9 +116,13 @@ def updatePlot(axes,data):
 	# clear the current plot
 	axes.cla()
 	# plot the new data
-	axes.plot(data,'r')
+	axes.plot(data,' ')
+	axes.axis('off')
+	#axes.get_xaxis().set_visible(False)
+	#axes.get_yaxis().set_visible(False)
+	axes.fill_between(range(len(data)), data, color='#6694f6cc')
 	# keep the title consistent
-	axes.set_title("Lap Statistics")
+	#axes.set_title("Lap Statistics")
 	# update the plot
 	fig.canvas.draw()
 	fig.canvas.flush_events()
@@ -238,4 +245,5 @@ def lap_helper():
 lap_button.clicked.connect(lap_helper)
 
 window.show()
+window.setFixedSize(window.width(), window.height())
 app.exec_()
