@@ -67,6 +67,11 @@ current_lap_num = 1
 laptime_table.setEditTriggers(QTableWidget.NoEditTriggers)
 laptime_table.setRowCount(0)
 laptime_table.setColumnCount(1)
+
+header = laptime_table.horizontalHeader()
+header.setSectionResizeMode(QHeaderView.ResizeToContents)
+header.setStretchLastSection(True)
+
 laptime_table.setHorizontalHeaderLabels(["Lap time"])
 
 laps_hbox.addWidget(laptime_table)
@@ -185,7 +190,7 @@ def reset_helper():
 	# update the timer count
 	timer_label.setText(str(time_format(milliseconds = 0)))
 
-	currLap_label.setText(str(time_format(milliseconds = 0)))
+	currLap_label.setText("Current Lap Time: " + str(time_format(milliseconds = 0)))
 
 	# reset the lap data
 	laps = []
