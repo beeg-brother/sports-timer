@@ -11,13 +11,12 @@ Layout plan:
 	    ~ Label for stats
 
 = main
-	-stretch
 	* timer
-	-small stretch
-	* timer buttons
-	-stretch
-	* stats
-		* lap list
-		* lap graph
-		* lap stats
-	-stretch
+	* hbox for timer buttons
+	* hbox:
+		* lap table
+		* vbox:
+			* matplotlib graph
+			* hbox:
+				* labels for avg/fast/slow
+				* times for avg/fast/slow
