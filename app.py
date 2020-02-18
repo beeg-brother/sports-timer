@@ -16,7 +16,6 @@ plt.ion()
 app = QApplication([])
 app.setApplicationName("Sports Timer")
 window = QWidget()
-
 current_time = 0
 last_lap = 0
 lapTime = 0
@@ -244,7 +243,7 @@ def lap_helper():
 		laptime_table.insertRow(1)
 		laptime_table.setItem(0, 1, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
 		# Always scroll to the newest data point in the table
-		laptime_table.scrollToItem(laptime_table.itemAt(0,0))
+		laptime_table.scrollToItem(laptime_table.item(0,0))
 		#label the row properly
 		lap_num_label = str("Lap " + str(current_lap_num))
 		current_lap_num += 1
