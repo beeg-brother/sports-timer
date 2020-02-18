@@ -128,11 +128,8 @@ def updatePlot(axes,data):
 	# plot the new data
 	axes.plot(data,' ')
 	axes.axis('off')
-	#axes.get_xaxis().set_visible(False)
-	#axes.get_yaxis().set_visible(False)
+	# color the space underneath our plot blue
 	axes.fill_between(range(len(data)), data, color='#6694f6cc')
-	# keep the title consistent
-	#axes.set_title("Lap Statistics")
 	# update the plot
 	fig.canvas.draw()
 	fig.canvas.flush_events()
@@ -160,6 +157,7 @@ def counter():
 
 # define the timer thread
 timer = Thread(name='timer', target = counter)
+# make it so that we can close the thread nicely
 timer.daemon = True
 
 # what to do when someone hits the start button
@@ -245,6 +243,8 @@ def lap_helper():
 		# add lap time to lap time table
 		laptime_table.insertRow(1)
 		laptime_table.setItem(0, 1, QTableWidgetItem(str(time_format(seconds = truncate(lapTime, 2)))[:-4]))
+		# Always scroll to the newest data point in the table
+		laptime_table.scrollToItem(laptime_table.itemAt(0,0))
 		#label the row properly
 		lap_num_label = str("Lap " + str(current_lap_num))
 		current_lap_num += 1
