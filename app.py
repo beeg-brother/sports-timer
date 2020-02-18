@@ -152,8 +152,8 @@ def counter():
 		# modify the label of the timer
 		timer_label.setText(str(time_format(seconds = truncate(current_time/1000000000, 2)))[:-4])
 		# modify the current lap timer
-		laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4]))
-
+		#laptime_table.setItem(0, 0, QTableWidgetItem(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4]))
+		laptime_table.item(0,0).setText(str(time_format(seconds = truncate(current_lap_time/1000000000, 2)))[:-4])
 # define the timer thread
 timer = Thread(name='timer', target = counter)
 # make it so that we can close the thread nicely
